@@ -11,14 +11,15 @@ public class PlayerControllerScript : MonoBehaviour
     private Collider2D groundCheckTrigger;
     [SerializeField]
     private Image hpBar, gunSelectionImg;
+    public bool CanGlide;
     [SerializeField]
-    private bool canGlide;
+    private bool[] weaponsOwned;
 
     private Rigidbody2D charControl;
     private EntityHealth hp;
     private float facingDirection = 1;
     private float secondsSinceLastShot = 0;
-    private int weaponSelected = 0;
+    private int weaponSelected = -1;
     private bool isInvincible = false;
 
     // Use this for initialization
@@ -73,7 +74,7 @@ public class PlayerControllerScript : MonoBehaviour
                     if(secondsSinceLastShot >= 0.15)
                     {
                         secondsSinceLastShot = 0;
-                        FireBullet(new Vector3(12.5f * facingDirection, (Random.value-0.5f)*0.8f, 0), 3);
+                        FireBullet(new Vector3(12.5f * facingDirection, (Random.value-0.5f)*0.8f, 0), 5);
                     }
                     break;
             }
@@ -81,16 +82,49 @@ public class PlayerControllerScript : MonoBehaviour
 
         if(Input.GetButtonDown("Change Weapon"))
         {
-            weaponSelected = ++weaponSelected % 3;
-            gunSelectionImg.rectTransform.anchoredPosition = new Vector3(100*weaponSelected-260, 0, 0);
+            if (weaponsOwned.Length > 0)
+            {
+                //Cycling selection var to index of next owned weapon
+                for (int i = 0; i < weaponsOwned.Length; i++)
+                {
+                    weaponSelected = ++weaponSelected % weaponsOwned.Length;
+                    if(weaponsOwned[weaponSelected])
+                    {
+                        break;
+                    }
+                }
+
+                //Testing to see that we actually own any weapons, and reflecting UI to match
+                if(weaponsOwned[weaponSelected])
+                {
+                    gunSelectionImg.rectTransform.anchoredPosition = new Vector3(100 * weaponSelected - 260, 0, 0);
+                }
+                else
+                {
+                    weaponSelected = -1;
+                    gunSelectionImg.rectTransform.anchoredPosition = new Vector3(100, 0, 0);
+                }
+            }
         }
     }
 
     void LateUpdate()
     {
-        if(Input.GetButton("Jump") && canGlide)
+        if(Input.GetButton("Jump") && CanGlide)
         {
             charControl.velocity = new Vector2(charControl.velocity.x, Mathf.Max(charControl.velocity.y, -0.25f));
+        }
+        switch(weaponSelected)
+        {
+            case 1:
+                gunSelectionImg.fillAmount = secondsSinceLastShot / 1f;
+                break;
+            case 2:
+                gunSelectionImg.fillAmount = secondsSinceLastShot / 0.15f;
+                break;
+            default:
+                gunSelectionImg.fillAmount = 1;
+                break;
         }
     }
 
@@ -112,5 +146,25 @@ public class PlayerControllerScript : MonoBehaviour
         //Update HP bar fill (100%-0% based on percentage of max health) and color (green at 100%, yellow at 50%, red at 0%)
         hpBar.fillAmount = hp.Health / hp.MaxHealth;
         hpBar.color = new Color((1 - Mathf.Max(0f, hpBar.fillAmount * 2 - 1)) * 0.8f, Mathf.Min(1f, hpBar.fillAmount * 2) * 0.8f, 0);
+    }
+
+    public void AddWeapon(int weaponIndex)
+    {
+        if (weaponIndex < 0 || weaponIndex >= weaponsOwned.Length)
+            return;
+
+        weaponsOwned[weaponIndex] = true;
+        switch(weaponIndex)
+        {
+            case 0:
+                GameObject.Find("Pistol Icon").GetComponent<Image>().enabled = true;
+                break;
+            case 1:
+                GameObject.Find("Shotgun Icon").GetComponent<Image>().enabled = true;
+                break;
+            case 2:
+                GameObject.Find("Machine Gun Icon").GetComponent<Image>().enabled = true;
+                break;
+        }
     }
 }
