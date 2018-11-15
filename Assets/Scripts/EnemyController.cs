@@ -39,6 +39,7 @@ public class EnemyController : MonoBehaviour
         }
 
         movementSpeed *= -1;
+        gameObject.transform.localScale = new Vector3(Mathf.Abs(gameObject.transform.localScale.x) * Mathf.Sign(movementSpeed), gameObject.transform.localScale.y, gameObject.transform.localScale.z);
     }
 
     void FixedUpdate ()

@@ -55,7 +55,7 @@ Transform:
   m_GameObject: {fileID: 1694808034072850}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4493097359098892}
   m_Father: {fileID: 0}
@@ -110,14 +110,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.46708465, y: 0.9937304}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.46708465, y: 0.9937304}
   m_EdgeRadius: 0
 --- !u!61 &61308857834338654
 BoxCollider2D:
@@ -128,7 +128,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.5}
@@ -142,7 +142,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.05}
+  m_Size: {x: 0.4, y: 0.05}
   m_EdgeRadius: 0
 --- !u!114 &114565494257759240
 MonoBehaviour:
@@ -171,8 +171,10 @@ MonoBehaviour:
   jumpForce: 300
   bulletType: {fileID: 1274775107954130, guid: 33954fbfb35e0f445a1d0243b9fb1aa4, type: 2}
   groundCheckTrigger: {fileID: 61308857834338654}
-  healthText: {fileID: 0}
-  gunText: {fileID: 0}
+  hpBar: {fileID: 0}
+  gunSelectionImg: {fileID: 0}
+  CanGlide: 0
+  weaponsOwned: 000000
 --- !u!212 &212592424062114832
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -208,8 +210,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f0fd3acc468860c4eafdcd645a2b76e7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9d849992f3b087543bad947206a24fd6, type: 3}
+  m_Color: {r: 0.9958991, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

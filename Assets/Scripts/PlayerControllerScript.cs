@@ -33,9 +33,10 @@ public class PlayerControllerScript : MonoBehaviour
     void Update()
     {
         charControl.velocity = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, charControl.velocity.y);
-        if (Input.GetAxisRaw("Horizontal") != 0)
+        if (Input.GetButtonDown("Horizontal"))
         {
             facingDirection = Mathf.Sign(Input.GetAxisRaw("Horizontal"));
+            gameObject.transform.localScale = new Vector3(Mathf.Abs(gameObject.transform.localScale.x)*facingDirection, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
         }
 
         if (Input.GetButtonDown("Jump"))
