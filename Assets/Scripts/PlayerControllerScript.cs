@@ -167,5 +167,9 @@ public class PlayerControllerScript : MonoBehaviour
                 GameObject.Find("Machine Gun Icon").GetComponent<Image>().enabled = true;
                 break;
         }
+
+        //Automatically equipping new weapon
+        weaponSelected = weaponIndex;
+        gunSelectionImg.rectTransform.anchoredPosition = new Vector3(100 * weaponSelected - 260, 0, 0);
     }
 }
