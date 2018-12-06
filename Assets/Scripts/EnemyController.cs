@@ -43,7 +43,6 @@ public class EnemyController : MonoBehaviour
                 col.gameObject.GetComponent<PlayerControllerScript>().HurtPlayer(dmgOnTouch);
                 break;
         }
-        Debug.Log(gameObject.name + " IS TOUCHING " + col.gameObject.name);
         movementSpeed *= -1;
         gameObject.transform.localScale = new Vector3(Mathf.Abs(gameObject.transform.localScale.x) * Mathf.Sign(movementSpeed), gameObject.transform.localScale.y, gameObject.transform.localScale.z);
     }
