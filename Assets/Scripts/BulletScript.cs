@@ -26,11 +26,19 @@ public class BulletScript : MonoBehaviour
             return;
         }
         
-        EntityHealth health = col.gameObject.GetComponent<EntityHealth>();
-        if (health != null)
+        if(col.CompareTag("Player"))
         {
-            health.ChangeHealth(-1 * dmgAmount);
+            col.gameObject.GetComponent<PlayerControllerScript>().HurtPlayer(dmgAmount);
         }
+        else
+        {
+            EntityHealth health = col.gameObject.GetComponent<EntityHealth>();
+            if (health != null)
+            {
+                health.ChangeHealth(-1 * dmgAmount);
+            }
+        }
+        
         Destroy(gameObject);
     }
 }
