@@ -15,9 +15,6 @@ public class CameraController : MonoBehaviour
     private float leadDistance;
 
     [SerializeField]
-    private bool bounds;
-
-    [SerializeField]
     private Vector2 minCameraPos;
     [SerializeField]
     private Vector2 maxCameraPos;

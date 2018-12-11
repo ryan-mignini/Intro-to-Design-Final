@@ -18,27 +18,32 @@ public class PlayerControllerScript : MonoBehaviour
     private Rigidbody2D charControl;
     private EntityHealth hp;
     private float facingDirection = 1;
-    private float secondsSinceLastShot = 0;
+    private float secondsSinceLastShot = 999;
     private int weaponSelected = -1;
     private bool isInvincible = false;
+
+    private Animator charAnim;
 
     // Use this for initialization
     void Start()
     {
         charControl = GetComponent<Rigidbody2D>();
+        charAnim = GetComponent<Animator>();
         hp = GetComponent<EntityHealth>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Movement
         charControl.velocity = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, charControl.velocity.y);
         if (Input.GetButtonDown("Horizontal"))
         {
             facingDirection = Mathf.Sign(Input.GetAxisRaw("Horizontal"));
             gameObject.transform.localScale = new Vector3(Mathf.Abs(gameObject.transform.localScale.x)*facingDirection, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
         }
-
+        
+        //Jumping
         if (Input.GetButtonDown("Jump"))
         {
             if (groundCheckTrigger.OverlapCollider(new ContactFilter2D(), new Collider2D[2]) > 1)
@@ -47,12 +52,14 @@ public class PlayerControllerScript : MonoBehaviour
             }
         }
 
+        //Shooting
         secondsSinceLastShot += Time.deltaTime;
         if (Input.GetButtonDown("Fire"))
         {
             switch (weaponSelected)
             {
                 case 0: //Pistol
+                    secondsSinceLastShot = 0;
                     FireBullet(new Vector3(15 * facingDirection, 0, 0), 10);
                     break;
                 case 1: //Shotgun
@@ -64,6 +71,9 @@ public class PlayerControllerScript : MonoBehaviour
                         FireBullet(new Vector3(9.9f * facingDirection, .375f, 0), 5);
                         FireBullet(new Vector3(9.9f * facingDirection, -.375f, 0), 5);
                     }
+                    break;
+                default:
+                    secondsSinceLastShot = 0;
                     break;
             }
         }
@@ -81,6 +91,7 @@ public class PlayerControllerScript : MonoBehaviour
             }
         }
 
+        //Weapon Cycling
         if(Input.GetButtonDown("Change Weapon"))
         {
             if (weaponsOwned.Length > 0)
@@ -107,6 +118,10 @@ public class PlayerControllerScript : MonoBehaviour
                 }
             }
         }
+
+        //Animation
+        charAnim.SetBool("isMoving", Input.GetAxisRaw("Horizontal") != 0);
+        charAnim.SetBool("isFiring", secondsSinceLastShot < .5f);
     }
 
     void LateUpdate()
@@ -131,7 +146,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     void FireBullet(Vector3 direction, float damage)
     {
-        BulletScript newBullet = GameObject.Instantiate(bulletType, transform.position + new Vector3(0, 0, 1), transform.rotation).GetComponent<BulletScript>();
+        BulletScript newBullet = GameObject.Instantiate(bulletType, transform.position + new Vector3(facingDirection*0.3f, 0.25f, 1), transform.rotation).GetComponent<BulletScript>();
         newBullet.speed = direction;
         newBullet.dmgAmount = damage;
         newBullet.tagsToIgnore.Add(gameObject.tag);
