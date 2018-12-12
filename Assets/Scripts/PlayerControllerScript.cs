@@ -37,7 +37,7 @@ public class PlayerControllerScript : MonoBehaviour
     {
         //Movement
         charControl.velocity = new Vector2(Input.GetAxis("Horizontal") * moveSpeed, charControl.velocity.y);
-        if (Input.GetButtonDown("Horizontal"))
+        if (Input.GetButton("Horizontal"))
         {
             facingDirection = Mathf.Sign(Input.GetAxisRaw("Horizontal"));
             gameObject.transform.localScale = new Vector3(Mathf.Abs(gameObject.transform.localScale.x)*facingDirection, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
