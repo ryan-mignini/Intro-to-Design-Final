@@ -44,12 +44,9 @@ public class PlayerControllerScript : MonoBehaviour
         }
         
         //Jumping
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && groundCheckTrigger.OverlapCollider(new ContactFilter2D(), new Collider2D[2]) > 1)
         {
-            if (groundCheckTrigger.OverlapCollider(new ContactFilter2D(), new Collider2D[2]) > 1)
-            {
-                charControl.AddForce(new Vector2(0, jumpForce));
-            }
+            charControl.AddForce(new Vector2(0, jumpForce));
         }
 
         //Shooting
@@ -122,6 +119,7 @@ public class PlayerControllerScript : MonoBehaviour
         //Animation
         charAnim.SetBool("isMoving", Input.GetAxisRaw("Horizontal") != 0);
         charAnim.SetBool("isFiring", secondsSinceLastShot < .5f);
+        charAnim.SetBool("isInAir", groundCheckTrigger.OverlapCollider(new ContactFilter2D(), new Collider2D[2]) < 2);
     }
 
     void LateUpdate()
